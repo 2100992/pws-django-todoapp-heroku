@@ -1,4 +1,4 @@
-import django_heroku
+# import django_heroku
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -51,6 +51,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'todoapp.wsgi.application'
 
+# try:
+#     DATABASE_URL = os.environ.get('DATABASE_URL')
+# except:
+#     DATABASE_URL = None
+#     print("local server runing")
+
+# if DATABASE_URL:
+#     import django_heroku
+#     django_heroku.settings(locals())
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
+#     }
 
 DATABASES = {
     'default': {
@@ -63,7 +79,13 @@ DATABASES = {
 LANGUAGE_CODE = 'ru-RU'
 
 
-django_heroku.settings(locals())
+try:
+    import django_heroku
+    django_heroku.settings(locals())
+except:
+    print("local server runing")
+
+# django_heroku.settings(locals())
 
 
 def get_cache():
