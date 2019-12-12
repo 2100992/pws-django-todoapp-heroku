@@ -63,13 +63,10 @@ class TaskListView(ListView):
         context = super().get_context_data(**kwargs)
 
         user_tasks = self.get_queryset()
-        tags = []
+        # tags = []
         categories = []
 
         for t in user_tasks:
-            # tags.append(list(t.category.all()))
-
-        # categories = []
             for cat in t.category.all():
                 if cat not in categories:
                     categories.append(cat)
