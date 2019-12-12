@@ -2,10 +2,31 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
+from slugify import slugify
+
+from tasks.translater import translate
+
+def make_unique_slug(model, text, counter=0):
+    try:
+        text = translate(text)
+    except:
+        print('Сервис перевода не доступен')
+    slug = slugify(text)
+    str_counter = ''
+    if slug == 'create':
+        slug = 'create0'
+    if counter:
+        str_counter = str(counter)
+    if model.objects.filter(slug=slug+str_counter).count():
+        counter += 1
+        slug = make_unique_slug(model, slug, counter)
+    return slug + str_counter
+
 
 class Category(models.Model):
-    slug = models.CharField(max_length=128)
+    slug = models.CharField(default='_', max_length=128)
     name = models.CharField(max_length=256)
+    todos_count = models.PositiveIntegerField(default=0)
 
     class Meta:
         verbose_name = 'Категория'
@@ -13,6 +34,11 @@ class Category(models.Model):
 
     def __str__(self):
         return f'{self.name} ({self.slug})'
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = make_unique_slug(Category, self.name)
+        super(Category, self).save(*args, **kwargs)
 
 
 class TodoItem(models.Model):
