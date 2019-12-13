@@ -14,7 +14,7 @@ def translate(text, lang = 'ru-en'):
     return data['text'][0]
 
 def main():
-    text = input('Введите текст для перевода')
+    text = input('Введите текст для перевода - ')
     print(f'Ваше слово переведено - {translate(text)}')
 
 if __name__ == "__main__":
