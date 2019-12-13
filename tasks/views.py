@@ -14,13 +14,19 @@ def index(request):
     # for t in Tag.objects.all()}
 
     # 3rd version
-    from django.db.models import Count
+    # from django.db.models import Count
 
-    counts = Category.objects.annotate(total_tasks=Count(
-        'todoitem')).order_by("-total_tasks")
-    counts = {c.name: c.total_tasks for c in counts}
+    # counts = Category.objects.annotate(total_tasks=Count(
+    #     'todoitem')).order_by("-total_tasks")
+    # counts = {c.name: c.total_tasks for c in counts}
 
-    return render(request, "tasks/index.html", {"counts": counts})
+    # return render(request, "tasks/index.html", {"counts": counts})
+
+    # 4 version
+
+    categories = Category.objects.all()
+
+    return render(request,"tasks/index.html", {'categories': categories})
 
 
 def filter_tasks(tags_by_task):
