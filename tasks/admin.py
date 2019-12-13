@@ -10,6 +10,6 @@ class TodoItemAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    fields = ('name',)
+    fields = ('name','todos_count')
     list_display = ('slug', 'name')
 
