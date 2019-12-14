@@ -4,11 +4,15 @@
 {% block title %}Задачи{% endblock %}
 
 {% block main_content %}
-<h1>Текущие задачи</h1>
+<h1>Текущие задачи пользователя - {{ user.username }}</h1>
 <ul class="list-inline">
     {% for cat in categories %}
         <li class="list-inline-item">
-            <span class="badge badge-info">{{ cat.name }}</span>
+            <span>
+                <a class="badge badge-info" href={% url "tasks:list_by_cat" cat.slug %}>
+                    {{ cat.name }}
+                </a>
+            </span>
         </li>
         <ul id="todo-list">
         {% for task in tasks %}
