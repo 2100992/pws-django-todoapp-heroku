@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from tasks.models import TodoItem, Category
+from collections import Counter
 
 
 def index(request):
@@ -26,7 +27,13 @@ def index(request):
 
     categories = Category.objects.all()
 
-    return render(request,"tasks/index.html", {'categories': categories})
+    priority_counters = Counter()
+    tasks = TodoItem.objects.all()
+    for task in tasks:
+        priority_counters[task.priority] += 1
+
+
+    return render(request,"tasks/index.html", {'categories': categories, 'priorities':dict(priority_counters)})
 
 
 def filter_tasks(tags_by_task):
@@ -42,7 +49,7 @@ def tasks_by_cat(request, cat_slug=None):
         cat = get_object_or_404(Category, slug=cat_slug)
         tasks = tasks.filter(category__in=[cat])
 
-    categories = []
+    categories = []    # Что это? Зачем это?
     for t in tasks:
         for cat in t.category.all():
             if cat not in categories:
