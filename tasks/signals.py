@@ -5,7 +5,6 @@ from collections import Counter
 
 # def new_count(model, ):
 
-@receiver(m2m_changed, sender=TodoItem.category.through)
 def print_signal_info(sender, instance, action, model, **kwargs):
     print()
     print(f'sender = {sender}')
@@ -32,7 +31,10 @@ def print_signal_info(sender, instance, action, model, **kwargs):
 
 
 @receiver(m2m_changed, sender=TodoItem.category.through)
-def task_cats_removed(sender, instance, action, model, **kwargs):
+def task_cats_changed(sender, instance, action, model, **kwargs):
+
+    print_signal_info(sender, instance, action, model, **kwargs)
+
     if action in ["post_remove", "post_add"]:
         cat_counter = Counter()
         
@@ -45,3 +47,4 @@ def task_cats_removed(sender, instance, action, model, **kwargs):
 
         for slug, new_count in cat_counter.items():
             Category.objects.filter(slug=slug).update(todos_count=new_count)
+
