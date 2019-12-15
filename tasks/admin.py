@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from tasks.models import TodoItem, Category
+from tasks.models import TodoItem, Category, Priority
 
 
 @admin.register(TodoItem)
@@ -13,3 +13,6 @@ class CategoryAdmin(admin.ModelAdmin):
     fields = ('name','todos_count')
     list_display = ('slug', 'name')
 
+@admin.register(Priority)
+class CategoryAdmin(admin.ModelAdmin):
+    pass
