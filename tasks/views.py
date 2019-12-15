@@ -1,8 +1,10 @@
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView
+from django.views.generic.base import View
 from django.views.generic.detail import DetailView
-from tasks.models import TodoItem, Category
+from tasks.models import TodoItem, Category, Priority
 from collections import Counter
+from datetime import datetime
 
 
 def index(request):
@@ -26,14 +28,17 @@ def index(request):
     # 4 version
 
     categories = Category.objects.all()
+    priorities = Priority.objects.all()
 
-    priority_counters = Counter()
-    tasks = TodoItem.objects.all()
-    for task in tasks:
-        priority_counters[task.priority] += 1
+    # priority_counters = Counter()
+    # tasks = TodoItem.objects.all()
+    # for task in tasks:
+    #     priority_counters[task.priority] += 1
+    # return render(request,"tasks/index.html", {'categories': categories, 'priorities':dict(priority_counters)})
 
 
-    return render(request,"tasks/index.html", {'categories': categories, 'priorities':dict(priority_counters)})
+    return render(request,"tasks/index.html", {'categories': categories, 'priorities': priorities})
+
 
 
 def filter_tasks(tags_by_task):
@@ -91,3 +96,12 @@ class TaskListView(ListView):
 class TaskDetailsView(DetailView):
     model = TodoItem
     template_name = "tasks/details.html"
+
+
+class CachedTimeView(View):
+    template = "tasks/timenow.html"
+
+    def get(self, request):
+        context = {}
+        context['timenow'] = datetime.now().strftime("%A, %d. %B %Y %H:%M:%S")
+        return render(request, self.template, context=context)
