@@ -1,6 +1,6 @@
-from django.db.models.signals import m2m_changed
+from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
-from tasks.models import TodoItem, Category
+from tasks.models import TodoItem, Category, Priority
 from collections import Counter
 
 # def new_count(model, ):
@@ -48,3 +48,22 @@ def task_cats_changed(sender, instance, action, model, **kwargs):
         for slug, new_count in cat_counter.items():
             Category.objects.filter(slug=slug).update(todos_count=new_count)
 
+@receiver(post_save, sender=TodoItem)
+def task_prts_changed(sender, instance, action='post_save', model=TodoItem, **kwargs):
+    
+    print_signal_info(sender, instance, action, model, **kwargs)
+
+    # if action in ["post_remove", "post_add"]:
+        # prt_counter = Counter()
+        
+    for prt in Priority.objects.all():
+        prt.todos_count = prt.tasks.count()
+        prt.save()
+        #     prt_counter[prt.slug] = 0
+
+        # for t in TodoItem.objects.all():
+        #     for cat in t.category.all():
+        #         cat_counter[cat.slug] += 1
+
+        # for slug, new_count in cat_counter.items():
+        #     Category.objects.filter(slug=slug).update(todos_count=new_count)
