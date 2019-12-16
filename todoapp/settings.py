@@ -96,7 +96,7 @@ def get_cache():
     if not environment_ready:
         cache = {
             'BACKEND':  'django.core.cache.backends.memcached.MemcachedCache',
-            'LOCATION': '94.103.94.54:11211',
+            'LOCATION': '94.103.94.54:11212',
         }
         # 'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
     else:
