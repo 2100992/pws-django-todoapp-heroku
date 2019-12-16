@@ -35,10 +35,11 @@
         <i class="fas fa-clipboard-list"></i>&nbsp;<a href="{% url 'tasks:list' %}">задачи</a>
         {% endif %}
         <i class="fas fa-cog"></i>&nbsp;<a href='{% url 'admin:index' %}'>админка</a>
-        <br>
-        <p class='mt-3'><a href="{% url 'tasks:cached_time_url' %}">Кешированное время</a></p>
-        <br>
-        <p class='mt-3'><a href="{% url 'tasks:cashed_page_time_url' %}">Кешированная страница "время"</a></p>
+        <div class="mt-3">
+          <p class='mt-3'><a href="{% url 'tasks:cached_time_url' %}">Страница с кешированным временем</a></p>
+          <p class='mt-3'><a href="{% url 'tasks:cashed_page_time_url' %}">Кешированная страница "время"</a></p>
+        </div>
+
         {% endblock %}
       </div>
 
