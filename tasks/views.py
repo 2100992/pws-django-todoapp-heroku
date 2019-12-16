@@ -120,3 +120,11 @@ class CachedTimeView(View):
         context['timenow'] = get_time()
         context['cachedtime'] = get_cached_time()
         return render(request, self.template, context=context)
+
+@cache_page(300)
+def cashed_time_page(request):
+    return render(
+        request,
+        "tasks/django_cached_page_timenow.html",
+        {'cachedtime': get_time(),},
+    )
