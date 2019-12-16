@@ -94,7 +94,11 @@ def get_cache():
         for key in ['SERVERS', 'USERNAME', 'PASSWORD']
     )
     if not environment_ready:
-        cache = {'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'}
+        cache = {
+            'BACKEND':  'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': '94.103.94.54:11211',
+        }
+        # 'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
     else:
         servers = os.environ['MEMCACHIER_SERVERS']
         username = os.environ['MEMCACHIER_USERNAME']
