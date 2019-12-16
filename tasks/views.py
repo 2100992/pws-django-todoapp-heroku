@@ -1,7 +1,13 @@
 from django.shortcuts import get_object_or_404, render
+
 from django.views.generic import ListView
 from django.views.generic.base import View
 from django.views.generic.detail import DetailView
+
+from django.views.decorators.cache import cache_page
+
+from django.core.cache import cache
+
 from tasks.models import TodoItem, Category, Priority
 from collections import Counter
 from datetime import datetime
@@ -98,10 +104,19 @@ class TaskDetailsView(DetailView):
     template_name = "tasks/details.html"
 
 
+def get_time():
+    return datetime.now().strftime("%A, %d. %B %Y %H:%M:%S")
+
+def get_cached_time():
+    if not cache.get('cached_time'):
+        cache.set('cached_time', datetime.now().strftime("%A, %d. %B %Y %H:%M:%S"), 300)
+    return cache.get('cached_time')
+
 class CachedTimeView(View):
     template = "tasks/timenow.html"
 
     def get(self, request):
         context = {}
-        context['timenow'] = datetime.now().strftime("%A, %d. %B %Y %H:%M:%S")
+        context['timenow'] = get_time()
+        context['cachedtime'] = get_cached_time()
         return render(request, self.template, context=context)
