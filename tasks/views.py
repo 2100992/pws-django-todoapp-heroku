@@ -36,6 +36,11 @@ def index(request):
     categories = Category.objects.all()
     priorities = Priority.objects.all()
 
+    if request.user:
+        user = request.user
+    else:
+        user = None
+
     # priority_counters = Counter()
     # tasks = TodoItem.objects.all()
     # for task in tasks:
@@ -43,7 +48,7 @@ def index(request):
     # return render(request,"tasks/index.html", {'categories': categories, 'priorities':dict(priority_counters)})
 
 
-    return render(request,"tasks/index.html", {'categories': categories, 'priorities': priorities})
+    return render(request,"tasks/index.html", {'categories': categories, 'priorities': priorities, 'user': user, })
 
 
 
